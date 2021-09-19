@@ -1,0 +1,34 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %}{{ cc.name }}{% endblock %}
+{% block main %}
+    <section class="headBlock headBlockBlog">
+        <h1 class="mainTitle mainTitleBlog">{{ cc.name }}</h1>
+    </section>
+
+    <section class="listCategoriesBlogWrap">
+        <div class="categoryListWrap">
+            <div class="customTextCategoryList listCategoriesBlog">
+                <a href="{% url 'blog-index' %}"
+                   class="categoryButton customTextCategoryItem customTextCategoryItemHover">All</a>
+                {% for cat in categories %}
+                    {% if cat.posts.count > 0 %}
+                        <a href="{% url 'blog-index-cat' cat.slug %}"
+                           class="categoryButton customTextCategoryItem customTextCategoryItemHover {% if cat == cc %}categoryButtonActive{% endif %}">{{ cat.name }}</a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <section class="blogEntrySection">
+        {% for post in posts %}
+            <a href="{% url 'blog-post' post.pk %}" class="blogEntryBlock">
+                <img src="{{ post.image.url }}" alt="" class="blogEntryImg">
+                <h2 class="blogEntryTitle">{{ post.title }}</h2>
+                <span class="blogEntryDate">{{ post.date|date:"d.m.Y" }}</span>
+            </a>
+        {% endfor %}
+    </section>
+
+{% endblock %}

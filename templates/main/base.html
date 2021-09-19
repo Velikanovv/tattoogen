@@ -1,0 +1,87 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block meta %}
+    {% endblock %}
+    <title>{% block title %}{% endblock %}</title>
+    <meta name="description" content="{% block description %}{% endblock %}" />
+    <meta name="keywords" content="{% block keywords %}{% endblock %}" />
+    <link rel="stylesheet" href="{% static 'main/css/style.css' %}">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2299798529172802"crossorigin="anonymous"></script>
+    {% block link %}
+    {% endblock %}
+    {% csrf_token %}
+</head>
+<body>
+<header class="header">
+    <div class="wrapHeader wrapper">
+        <a href="{% url 'index' %}" class="logoHeader"><img src="{{ cs.logo_header.url }}" class="logo"></a>
+        <div class="buttonHeader buttonHeaderBlog">
+            <a href="{% url 'blog-index' %}" class="buttonHeaderLink">Blog</a>
+            <div class="buttonUnlockBg"></div>
+        </div>
+    </div>
+</header>
+
+<main class="wrapper Mmain" style="min-height: 100vh;!important;">
+    {% block main %}
+    {% endblock %}
+</main>
+<footer class="footer">
+    <div class="wrapFooter wrapper">
+        <div class="topFooter">
+            <a href="{% url 'index' %}">
+                <img src="{{ cs.logo_footer.url }}" class="logo logoFooter">
+            </a>
+            <div class="socialBlock">
+                {% for soc in socials %}
+                <a href="{{ soc.url }}" class="socialItem">
+                    <img src="{{ soc.file.url }}" width="31" height="31">
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+        <nav class="navBar navBarFooter">
+            <ul class="navList">
+                <li class="navListItem"><a href="{% url 'blog-index' %}">Blog</a></li>
+                <li class="navListItem"><a href="https://unicy.space">UNICY</a></li>
+            </ul>
+        </nav>
+        <div class="bottomFooter">
+            <div class="allRightsReserved">2021. All rights reserved</div>
+            <a class="webSiteAddress">fontsfortattoos.com</a>
+        </div>
+    </div>
+</footer>
+
+<div href="#" class="modalWindow">
+    <div class="modalHead">
+        <h4 class="modalTitle">Activate all fonts!</h4>
+        <div class="modalClose">&#10006;</div>
+    </div>
+    <p class="modalText">Share our service in any social network, to activate all the fonts.<br>This you will help the development of our service.</p>
+    {% block share %}
+    {% endblock %}
+</div>
+<div class="dark_modal"></div>
+<div id="fb-root"></div>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/ru_RU/sdk.js#xfbml=1&version=v12.0" nonce="GjPdZO1H"></script>
+    <script>
+    </script>
+
+    <script>
+        var a2a_config = a2a_config || {};
+        a2a_config.onclick = 1;
+    </script>
+    <script async src="https://static.addtoany.com/menu/page.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="{% static 'main/js/colorpickr.js' %}"></script>
+<script src="{% static 'main/js/mobileCarousel.min.js' %}"></script>
+{% block scripts %}
+{% endblock %}
+</body>
+</html>

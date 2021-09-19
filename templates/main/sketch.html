@@ -1,0 +1,547 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %}{{ sketch.text }} {{ sketch.title_part }}{% endblock %}
+{% block keywords %}{{ sketch.keywords }}{% endblock %}
+{% block description %}Tattoo fonts generator online{% endblock %}
+{% block main %}
+
+    <section class="headBlock headBlockPage">
+        <h1 class="mainTitlePage">{{ sketch.text }} - Tattoo Image Free Download</h1>
+        <p class="headBlockPageText">{{ sketch.font.name }}, {{ sketch.font.category.name }}, {{ sketch.font.language_type }}</p>
+    </section>
+
+    <section class="customTextBlock customTextWrapInput customTextPageBlock">
+        <input type="text" class="customTextInput" placeholder="Custom text" value="{{ sketch.text }}">
+        <button class="customtextButton"></button>
+        <button class="buttonHeader buttonUpdate">
+            <span class="buttonHeaderLink buttonUnlockText">Update</span>
+            <div class="buttonUnlockBg"></div>
+        </button>
+    </section>
+
+    <section class="downloadBlock downloadBlockPage">
+        <div class="userTextDownloadBlock">
+            <img src="{{ sketch.image.url }}" alt="" class="userTextDownloadImg">
+        </div>
+        <div class="downloadButtons">
+            <button class="buttonHeader downloadButtonCopyLink">
+                <span class="buttonHeaderLink">Copy Link</span>
+                <div class="buttonUnlockBg"></div>
+            </button>
+            <button class="buttonHeader downloadButtonJpeg">
+                <span class="buttonHeaderLink">Download .jpeg</span>
+                <div class="buttonUnlockBg"></div>
+            </button>
+        </div>
+        <a href="{% url 'index' %}" class="seeAllFontsLink">See all fonts</a>
+    </section>
+{% endblock %}
+{% block scripts %}
+    <script>
+
+        $(document).ready(function () {
+
+            var cats_dict = {};
+
+            {% for category in categories %}
+                cats_dict['{{ category.id }}'] = "off";
+            {% endfor %}
+            let mainCardBlock,
+                darkModal = 0,
+                modalWindow = 0,
+                modalClose = 0,
+                //addActionButton = 0,
+                categoryButton = 0,
+                updateWork = 0,
+                buttonsCopyDownload = 0,
+                customTextChangeWrap = 0,
+                g_font_id = '{{ sketch.font.id }}',
+                image_href = '{{ sketch.image.url }}',
+                g_link = window.location.href,
+                // Отвечает за скорость анимаций модульного окна
+                cardsFonts = {
+                    apply: `
+         <div class="mainCategoryItem mainCategoryItemApply">
+            <p class="mainCategoryReenieBeanie">Reenie Beanie, Category, en/ru</p>
+            <div class="mainCategoryItemContentWrap">
+               <div class="categoryItemImg">
+                  <img src="img/TattooGenerator.png" alt="">
+               </div>
+               <div class="mainCategoryItemRightSide">
+                  <div class="quantityDownload">
+                     <span>205</span>
+                     <svg viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M11.2205 8.21525L9.03125 10.4051V4.78125C9.03125 4.488 8.79325 4.25 8.5 4.25C8.20675 4.25 7.96875 4.488 7.96875 4.78125V10.4051L5.77947 8.21578C5.57175 8.00806 5.23547 8.00806 5.02828 8.21578C4.82056 8.4235 4.82056 8.75978 5.02828 8.96694L8.03356 11.9722C8.16106 12.0997 8.33531 12.139 8.50056 12.1098C8.66525 12.139 8.84003 12.0992 8.96753 11.9722L11.9728 8.96694C12.1805 8.75922 12.1805 8.42297 11.9728 8.21578C11.7645 8.00806 11.4283 8.00806 11.2205 8.21525ZM8.5 0C3.80589 0 0 3.80533 0 8.5C0 13.1947 3.80589 17 8.5 17C13.1941 17 17 13.1941 17 8.5C17 3.80589 13.1947 0 8.5 0ZM8.5 15.9375C4.39236 15.9375 1.0625 12.6076 1.0625 8.5C1.0625 4.39236 4.39236 1.0625 8.5 1.0625C12.6076 1.0625 15.9375 4.39236 15.9375 8.5C15.9375 12.6076 12.6076 15.9375 8.5 15.9375Z" fill="#818181"/>
+                     </svg>
+                  </div>
+                  <button class="buttonHeader buttonApply">
+                     <span class="buttonHeaderLink buttonApplyText">Apply</span>
+                     <div class="buttonUnlockBg"></div>
+                  </button>
+               </div>
+            </div>
+         </div>
+      `,
+                    unlock: `
+         <div class="mainCategoryItem mainCategoryItemUnlock">
+            <p class="mainCategoryReenieBeanie">Reenie Beanie, Category, en/ru</p>
+            <div class="mainCategoryItemContentWrap">
+               <div class="categoryItemImg">
+                  <img src="img/Tattoo_Generator.png" alt="">
+               </div>
+               <div class="mainCategoryItemRightSide">
+                  <div class="quantityDownload">
+                     <span>205</span>
+                     <svg viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M11.2205 8.21525L9.03125 10.4051V4.78125C9.03125 4.488 8.79325 4.25 8.5 4.25C8.20675 4.25 7.96875 4.488 7.96875 4.78125V10.4051L5.77947 8.21578C5.57175 8.00806 5.23547 8.00806 5.02828 8.21578C4.82056 8.4235 4.82056 8.75978 5.02828 8.96694L8.03356 11.9722C8.16106 12.0997 8.33531 12.139 8.50056 12.1098C8.66525 12.139 8.84003 12.0992 8.96753 11.9722L11.9728 8.96694C12.1805 8.75922 12.1805 8.42297 11.9728 8.21578C11.7645 8.00806 11.4283 8.00806 11.2205 8.21525ZM8.5 0C3.80589 0 0 3.80533 0 8.5C0 13.1947 3.80589 17 8.5 17C13.1941 17 17 13.1941 17 8.5C17 3.80589 13.1947 0 8.5 0ZM8.5 15.9375C4.39236 15.9375 1.0625 12.6076 1.0625 8.5C1.0625 4.39236 4.39236 1.0625 8.5 1.0625C12.6076 1.0625 15.9375 4.39236 15.9375 8.5C15.9375 12.6076 12.6076 15.9375 8.5 15.9375Z" fill="#818181"/>
+                     </svg>
+                  </div>
+                  <button class="buttonHeader buttonUnlock">
+                     <span class="buttonHeaderLink buttonUnlockText">Unlock</span>
+                     <div class="buttonUnlockBg"></div>
+                  </button>
+               </div>
+            </div>
+            <p class="mainCategoryItemShareLink">Please, <button type="button" class="shareLink buttonUnlock">share link</button> to our service, to activate all fonts</p>
+         </div>
+      `
+                },
+                dowloadText = `
+      <div class="userTextDownloadBlock">
+         <img src="img/Some_text.png" alt="" class="userTextDownloadImg">
+      </div>
+      <div class="downloadButtons">
+         <button class="buttonHeader downloadButtonCopyLink">
+            <span class="buttonHeaderLink">Copy Link</span>
+            <div class="buttonUnlockBg"></div>
+         </button>
+         <button class="buttonHeader downloadButtonJpeg">
+            <span class="buttonHeaderLink">Download .jpeg</span>
+            <div class="buttonUnlockBg"></div>
+         </button>
+      </div>
+   `,
+                updateButton = `
+      <button class="buttonHeader buttonUpdate">
+         <span class="buttonHeaderLink buttonUnlockText">Update</span>
+         <div class="buttonUnlockBg"></div>
+      </button>
+   `
+
+            if (document.querySelector('.mainCategoryListBlock') || document.querySelector('.customTextPageBlock')) {
+                customTextChangeWrap = document.querySelector('.customTextWrapInput');
+                updateWork = () => {
+                    // Вывод алерта при нажании на update
+                    customTextChangeWrap.querySelector('.buttonUpdate').addEventListener('click', () => {
+                        const customTextInput = document.querySelector('.customTextInput').value,
+                            pcrresult = document.querySelector('.pcr-result').value;
+                        var downloadBlock = document.querySelector('.downloadBlock');
+                        var csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+                        $.ajax
+                        ({
+                            data:
+                                {
+                                    csrfmiddlewaretoken: csrftoken,
+                                    action: 'get_img',
+                                    text: customTextInput,
+                                    color: pcrresult,
+                                    font_id: g_font_id
+                                }, // get the form data
+                            type: "POST", // GET or POST
+                            url: "{% url 'index' %}",
+                            // on success
+                            success: function (response) {
+                                var json = $.parseJSON(response['sketch']);
+
+                                host = window.location.origin
+                                g_link = host + "/sketch/" + json[0].fields.hash;
+                                document.querySelector('.mainTitlePage').innerHTML = json[0].fields.text + " - Tattoo Image Free Download"
+                                history.pushState({}, null, g_link);
+                                image_href = json[0].fields.image
+                                dowloadText = '' +
+                                    '<div class="userTextDownloadBlock">' +
+                                    '<img src="/storage/' + json[0].fields.image + '" alt="" class="userTextDownloadImg">' +
+                                    '</div>' +
+                                    '<div class="downloadButtons">' +
+                                    '<button class="buttonHeader downloadButtonCopyLink">' +
+                                    '<span class="buttonHeaderLink">Copy Link</span>' +
+                                    '<div class="buttonUnlockBg"></div>' +
+                                    '</button>' +
+                                    '<button class="buttonHeader downloadButtonJpeg">' +
+                                    '<span class="buttonHeaderLink">Download .jpeg</span>' +
+                                    ' <div class="buttonUnlockBg"></div>' +
+                                    '</button>' +
+                                    '</div>' +
+                                    '<a href="{% url 'index' %}" class="seeAllFontsLink">See all fonts</a>'
+                                downloadBlock.innerHTML = dowloadText;
+                                downloadBlock.classList.add('downloadBlockWork');
+
+                                const topOffset = document.querySelector('.header').offsetHeight,
+                                    elementPosition = downloadBlock.getBoundingClientRect().top,
+                                    offsetPosition = elementPosition - 100 - topOffset;
+                                window.scrollBy({
+                                    top: offsetPosition,
+                                    behavior: 'smooth'
+                                });
+
+                                // Добавление кнопки update
+                                customTextChangeWrap.classList.add('customTextWrapInputNow');
+                                if (!customTextChangeWrap.querySelector('.buttonUpdate')) {
+                                    customTextChangeWrap.insertAdjacentHTML('beforeend', updateButton);
+
+                                    updateWork();
+                                }
+
+                                buttonsCopyDownload();
+                            },
+                            // on error
+                            error: function (response) {
+                                alert(response.responseJSON.errors);
+                            }
+                        });
+
+                    })
+
+                }
+
+                buttonsCopyDownload = () => {
+                    //Копирование текста с помощью кнопки Copy Link
+                    const buttonCopyLink = document.querySelector('.downloadButtonCopyLink');
+                    buttonCopyLink.addEventListener('click', () => {
+                        navigator.clipboard.writeText(g_link);
+                        buttonLink = document.querySelector('.downloadButtonCopyLink .buttonHeaderLink');
+                        buttonLink.innerHTML = "Copied!"
+                        setTimeout(function () {
+                            buttonLink.innerHTML = "Copy Link"
+                        }, 2000);
+                    })
+
+                    // Работа кнопки downloadButtonJpeg
+                    const downloadButtonJpeg = document.querySelector('.downloadButtonJpeg');
+                    downloadButtonJpeg.addEventListener('click', () => {
+                        var link = document.createElement('a');
+                        link.setAttribute('href', image_href);
+                        link.setAttribute('download', 'sketch.jpg');
+                        link.click();
+                    })
+                }
+            }
+
+            if (document.querySelector('.modalWindow') && document.querySelector('.dark_modal')) {
+                darkModal = document.querySelector('.dark_modal'),
+                    modalWindow = document.querySelector('.modalWindow'),
+                    modalClose = document.querySelector('.modalClose'),
+                    // Отвечает за скорость анимаций модульного окна
+                    animSpeed = 500;
+
+                let animNow = false;
+
+                buttonUnlockEvent = () => {
+                    if (animNow == false) {
+                        animNow = true;
+
+                        darkModal.classList.add("dark_bg");
+
+                        darkModal.style.animation = darkAnim("darkAnim");
+                        modalWindow.style.animation = darkAnim("darkAnim");
+                        modalWindow.classList.add('openAdaptive');
+                        setTimeout(() => {
+                            animNow = false;
+                        }, animSpeed);
+                    }
+                }
+
+                // функция обеспечивающая вызов модульного окно по клику на unlock или share link
+                function addActionButton() {
+                    const modalMenuButton = document.querySelectorAll('.buttonUnlock');
+                    modalMenuButton.forEach(item => {
+                        item.addEventListener('click', buttonUnlockEvent)
+                    })
+                }
+
+                addActionButton = addActionButton();
+
+                modalClose.addEventListener('click', modalCloseFun)
+                darkModal.addEventListener('click', modalCloseFun)
+
+                function darkAnim(nameAnim) {
+                    return (nameAnim + " " + (animSpeed / 1000) + "s ease-in forwards");
+                }
+
+                function modalCloseFun() {
+                    if (animNow == false) {
+                        animNow = true;
+
+                        darkModal.style.animation = darkAnim("darkAnimReverse");
+                        modalWindow.style.animation = darkAnim("darkAnimReverse");
+                        setTimeout(() => {
+                            modalWindow.classList.remove("openAdaptive");
+                            darkModal.classList.remove("dark_bg");
+                            animNow = false;
+                        }, animSpeed);
+                    }
+                }
+            }
+
+
+            if (document.querySelector('.mainCategoryListBlock')) {
+                mainCardBlock = document.querySelector('.mainCategoryListBlock');
+
+                // функция добавлениея новой карточки
+                function addNewCard(card, lastCard) {
+                    mainCardBlock.insertAdjacentHTML('beforeend', card)
+                    if (lastCard == 1) {
+                        buttonsCardWork('buttonApply');
+                    }
+
+                }
+
+                function changeUnlock() {
+                    const itemUnlock = document.querySelectorAll('.mainCategoryItemUnlock');
+                    buttonsCardWork('buttonUnlock');
+                    itemUnlock.forEach((item, i, arr) => {
+                        const buttonUnlock = item.querySelector('.buttonUnlock'),
+                            ItemShareLink = item.querySelector('.mainCategoryItemShareLink'),
+                            buttonHeaderLink = item.querySelector('.buttonHeaderLink');
+
+                        item.classList.remove('mainCategoryItemUnlock');
+                        item.classList.add('mainCategoryItemApply');
+                        buttonUnlock.removeEventListener('click', buttonUnlockEvent);
+                        ItemShareLink.remove();
+                        buttonUnlock.classList.remove('buttonUnlock');
+                        buttonUnlock.classList.add('buttonApply');
+                        buttonHeaderLink.classList.remove('buttonUnlockText');
+                        buttonHeaderLink.classList.add('buttonApplyText');
+                        buttonHeaderLink.innerHTML = 'Apply';
+                    })
+                }
+
+                document.querySelector('.footer').addEventListener('click', changeUnlock)
+
+                // функция кнопки Apply
+                function buttonsCardWork(buttonClass) {
+                    var buttonApply = document.querySelectorAll(`.${buttonClass}`);
+                    buttonApply.forEach((item) => {
+                        item.addEventListener('click', () => {
+                            var downloadBlock = document.querySelector('.downloadBlock');
+                            var csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+                            customTextInput = document.querySelector('.customTextInput').value;
+                            pcrresult = document.querySelector('.pcr-result').value;
+
+                            $.ajax
+                            ({
+                                data:
+                                    {
+                                        csrfmiddlewaretoken: csrftoken,
+                                        action: 'get_img',
+                                        text: customTextInput,
+                                        color: pcrresult,
+                                        font_id: item.id
+                                    }, // get the form data
+                                type: "POST", // GET or POST
+                                url: "{% url 'index' %}",
+                                // on success
+                                success: function (response) {
+                                    g_font_id = item.id
+                                    var json = $.parseJSON(response['sketch']);
+                                    host = window.location.origin
+                                    g_link = host + "/sketch/" + json[0].fields.hash;
+                                    image_href = json[0].fields.image
+                                    dowloadText = '' +
+                                        '<div class="userTextDownloadBlock">' +
+                                        '<img src="storage/' + json[0].fields.image + '" alt="" class="userTextDownloadImg">' +
+                                        '</div>' +
+                                        '<div class="downloadButtons">' +
+                                        '<button class="buttonHeader downloadButtonCopyLink">' +
+                                        '<span class="buttonHeaderLink">Copy Link</span>' +
+                                        '<div class="buttonUnlockBg"></div>' +
+                                        '</button>' +
+                                        '<button class="buttonHeader downloadButtonJpeg">' +
+                                        '<span class="buttonHeaderLink">Download .jpeg</span>' +
+                                        ' <div class="buttonUnlockBg"></div>' +
+                                        '</button>' +
+                                        '</div>'
+                                    downloadBlock.innerHTML = dowloadText;
+                                    downloadBlock.classList.add('downloadBlockWork');
+
+                                    const topOffset = document.querySelector('.header').offsetHeight,
+                                        elementPosition = downloadBlock.getBoundingClientRect().top,
+                                        offsetPosition = elementPosition - 100 - topOffset;
+                                    window.scrollBy({
+                                        top: offsetPosition,
+                                        behavior: 'smooth'
+                                    });
+
+                                    // Добавление кнопки update
+                                    customTextChangeWrap.classList.add('customTextWrapInputNow');
+                                    if (!customTextChangeWrap.querySelector('.buttonUpdate')) {
+                                        customTextChangeWrap.insertAdjacentHTML('beforeend', updateButton);
+
+                                        updateWork();
+                                    }
+
+                                    buttonsCopyDownload();
+                                },
+                                // on error
+                                error: function (response) {
+                                    alert(response.responseJSON.errors);
+                                }
+                            });
+
+
+                        })
+
+                    })
+                    if (document.querySelector('.modalWindow') && document.querySelector('.dark_modal')) {
+                        addActionButton;
+                    }
+                }
+            }
+
+
+            if (document.querySelector('.categoryButton') && !document.querySelector('.listCategoriesArticleWrap')) {
+                categoryButton = document.querySelectorAll('.categoryButton');
+                // Анимация кнопок "Категория"
+                categoryButton.forEach((item) => {
+                    item.addEventListener('click', () => {
+                        item.classList.toggle('categoryButtonActive');
+                        // Первое нажатие по кнопке "Категория"
+
+                        if (item.classList.contains('customTextCategoryItemHover')) {
+                            setInterval(() => {
+                                item.classList.remove('customTextCategoryItemHover')
+                            }, 10);
+                            // второе нажание по кнопке "Категория"
+                        } else if (item.classList.contains('customTextCategoryItemHover')) {
+                            setInterval(() => {
+                                item.classList.add('customTextCategoryItemHover')
+                            }, 10);
+                        }
+                        if (cats_dict[item.id] == 'off') {
+                            cats_dict[item.id] = 'on'
+                        } else {
+                            cats_dict[item.id] = 'off'
+                        }
+                        delButtonsCardWork('mainCategoryItem');
+
+
+                        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+                        $.ajax
+                        ({
+                            data:
+                                {
+                                    csrfmiddlewaretoken: csrftoken,
+                                    action: 'getfonts_cats',
+                                    cats: cats_dict
+                                }, // get the form data
+                            type: "POST", // GET or POST
+                            url: "{% url 'index' %}",
+                            // on success
+                            success: function (response) {
+                                count = response['font_count']
+                                var json = $.parseJSON(response['fonts']);
+                                var i = 1;
+                                for (var key in json) {
+                                    if (json.hasOwnProperty(key)) {
+                                        if (json[key].fields.closed == false) {
+                                            card = '' +
+                                                '<div class="mainCategoryItem">' +
+                                                '<p class="mainCategoryReenieBeanie">' + json[key].fields.name + ', ' + json[key].fields.language_type + '</p>' +
+                                                '<div class="mainCategoryItemContentWrap">' +
+                                                '<div class="categoryItemImg">' +
+                                                '<img src="storage/' + json[key].fields.image + '" alt="">' +
+                                                '</div>' +
+                                                '<div class="mainCategoryItemRightSide">' +
+                                                '<div class="quantityDownload">' +
+                                                '<span>205</span>' +
+                                                '<svg viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+                                                '<path d="M11.2205 8.21525L9.03125 10.4051V4.78125C9.03125 4.488 8.79325 4.25 8.5 4.25C8.20675 4.25 7.96875 4.488 7.96875 4.78125V10.4051L5.77947 8.21578C5.57175 8.00806 5.23547 8.00806 5.02828 8.21578C4.82056 8.4235 4.82056 8.75978 5.02828 8.96694L8.03356 11.9722C8.16106 12.0997 8.33531 12.139 8.50056 12.1098C8.66525 12.139 8.84003 12.0992 8.96753 11.9722L11.9728 8.96694C12.1805 8.75922 12.1805 8.42297 11.9728 8.21578C11.7645 8.00806 11.4283 8.00806 11.2205 8.21525ZM8.5 0C3.80589 0 0 3.80533 0 8.5C0 13.1947 3.80589 17 8.5 17C13.1941 17 17 13.1941 17 8.5C17 3.80589 13.1947 0 8.5 0ZM8.5 15.9375C4.39236 15.9375 1.0625 12.6076 1.0625 8.5C1.0625 4.39236 4.39236 1.0625 8.5 1.0625C12.6076 1.0625 15.9375 4.39236 15.9375 8.5C15.9375 12.6076 12.6076 15.9375 8.5 15.9375Z" fill="#818181"/>' +
+                                                '</svg>' +
+                                                '</div>' +
+                                                '<button class="buttonHeader buttonApply" id="' + json[key].pk + '">' +
+                                                '<span class="buttonHeaderLink buttonUnlockText">Apply</span>' +
+                                                '<div class="buttonUnlockBg"></div>' +
+                                                '</button>' +
+                                                '</div>' +
+                                                '</div>' +
+                                                '</div>'
+                                        } else {
+                                            card = '' +
+                                                '<div class="mainCategoryItem mainCategoryItemUnlock">' +
+                                                '<p class="mainCategoryReenieBeanie">' + json[key].fields.name + ', ' + json[key].fields.language_type + '</p>' +
+                                                '<div class="mainCategoryItemContentWrap">' +
+                                                '<div class="categoryItemImg">' +
+                                                '<img src="storage/' + json[key].fields.image + '" alt="">' +
+                                                '</div>' +
+                                                '<div class="mainCategoryItemRightSide">' +
+                                                '<div class="quantityDownload">' +
+                                                '<span>205</span>' +
+                                                '<svg viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+                                                '<path d="M11.2205 8.21525L9.03125 10.4051V4.78125C9.03125 4.488 8.79325 4.25 8.5 4.25C8.20675 4.25 7.96875 4.488 7.96875 4.78125V10.4051L5.77947 8.21578C5.57175 8.00806 5.23547 8.00806 5.02828 8.21578C4.82056 8.4235 4.82056 8.75978 5.02828 8.96694L8.03356 11.9722C8.16106 12.0997 8.33531 12.139 8.50056 12.1098C8.66525 12.139 8.84003 12.0992 8.96753 11.9722L11.9728 8.96694C12.1805 8.75922 12.1805 8.42297 11.9728 8.21578C11.7645 8.00806 11.4283 8.00806 11.2205 8.21525ZM8.5 0C3.80589 0 0 3.80533 0 8.5C0 13.1947 3.80589 17 8.5 17C13.1941 17 17 13.1941 17 8.5C17 3.80589 13.1947 0 8.5 0ZM8.5 15.9375C4.39236 15.9375 1.0625 12.6076 1.0625 8.5C1.0625 4.39236 4.39236 1.0625 8.5 1.0625C12.6076 1.0625 15.9375 4.39236 15.9375 8.5C15.9375 12.6076 12.6076 15.9375 8.5 15.9375Z" fill="#818181"/>' +
+                                                '</svg>' +
+                                                '</div>' +
+                                                '<button class="buttonHeader buttonUnlock" id="' + json[key].pk + '">' +
+                                                '<span class="buttonHeaderLink buttonUnlockText">Unlock</span>' +
+                                                '<div class="buttonUnlockBg"></div>' +
+                                                '</button>' +
+                                                '</div>' +
+                                                '</div>' +
+                                                '<p class="mainCategoryItemShareLink">Please, <button type="button" class="shareLink buttonUnlock">share link</button> to our service, to activate all fonts</p>' +
+                                                '</div>'
+                                        }
+                                        if (i + 1 > count) {
+                                            addNewCard(card, 1);
+                                        } else {
+                                            addNewCard(card);
+                                        }
+                                    }
+                                    i = i + 1
+                                }
+                                addActionButton();
+                            },
+                            // on error
+                            error: function (response) {
+                            }
+                        });
+                    })
+                })
+            }
+
+            if (document.querySelector('.customtextButton')) {
+                const pickr = Pickr.create({
+                    el: '.customtextButton',
+                    theme: 'nano',
+                    default: '{{ sketch.color }}',
+
+                    comparison: true,
+
+                    components: {
+
+                        // Main components
+                        preview: true,
+                        opacity: false,
+                        hue: true,
+
+                        // Input / output Options
+                        interaction: {
+                            input: true
+                        }
+                    }
+                });
+
+                // Изменение квадрата
+                pickr.on('change', () => {
+                    pickr.applyColor();
+                })
+            }
+
+            if (document.querySelector('.customTextPageBlock')) {
+                updateWork();
+                buttonsCopyDownload();
+            }
+
+        });
+
+    </script>
+{% endblock %}
