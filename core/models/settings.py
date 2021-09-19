@@ -19,6 +19,10 @@ def logo_footer_path(instance, filename):
     return 'settings/logo_footer/{0}'.format(filename)
 
 
+def icon_footer_path(instance, filename):
+    return 'settings/icon/{0}'.format(filename)
+
+
 class ContentSettings(models.Model):
     main_title = models.CharField(
         default='TATTOO GENERATOR',
@@ -32,6 +36,9 @@ class ContentSettings(models.Model):
     )
     logo_footer = models.FileField(
         upload_to=logo_footer_path,
+    )
+    icon = models.ImageField(
+        upload_to=icon_footer_path,
     )
 
     class Meta:
@@ -48,6 +55,7 @@ class ContentSettings(models.Model):
         super(ContentSettings, self).__init__(*args, **kwargs)
         self.__original_logo_header = self.logo_header
         self.__original_logo_footer = self.logo_footer
+        self.__original_icon = self.icon
 
     def save(self, force_insert=False, force_update=False, *args, **kwargs):
         cContentSettings = ContentSettings.objects.filter(id=self.id).first()
@@ -57,6 +65,9 @@ class ContentSettings(models.Model):
         if self.logo_footer != self.__original_logo_footer:
             if self.pk:
                 self.__original_logo_footer.storage.delete(self.__original_logo_footer.path)
+        if self.icon != self.__original_icon:
+            if self.pk:
+                self.__original_icon.storage.delete(self.__original_icon.path)
         super(ContentSettings, self).save(force_insert, force_update, *args, **kwargs)
 
 
