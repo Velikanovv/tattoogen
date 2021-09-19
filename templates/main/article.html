@@ -1,0 +1,83 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %}{{ post.title }}{% endblock %}
+{% block description %}{{ post.description }}{% endblock %}
+{% block keywords %}Blogg, Post, {{ post.keywords }}, Tattoo fonts generator online, free font for tattoo, tattoo font online, generator of fonts for tattoo,Tattoo, Lettering tattoo, Script tattoo, Font tattoo, Tattoo designs, Letters font, Font style, Free tattoo font{% endblock %}
+{% block link %}
+    <style type="text/css">
+        .blogArticleSection p {
+            margin-bottom: 20px;
+            font-size: 17px;
+            font-weight: 400;
+            color: #292929;
+        }
+
+        .blogArticleSection h2 {
+            font-size: 26px;
+            font-weight: 700;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            color: #292929;
+        }
+
+        .blogArticleSection h2 strong {
+            font-size: 26px;
+            font-weight: 700;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            color: #292929;
+        }
+
+        .blogArticleSection p img {
+            border-radius: 15px;
+            margin: 0 auto;
+            margin-bottom: 20px;
+            display: block;
+            max-width: 500px;
+            width: 100%;
+        }
+    </style>
+{% endblock %}
+{% block main %}
+    <section class="listCategoriesArticleWrap">
+        <div class="listCategoriesArticle">
+            <a href="{% url 'blog-index' %}"
+               class="categoryButton categoryItemArticle customTextCategoryItemHover">Back to blog</a>
+        </div>
+        <div class="articleDate">{{ post.date|date:"d.m.Y" }}</div>
+    </section>
+
+    <section class="blogArticleSection">
+        <h1 class="mainTitleArticle">{{ post.title }}</h1>
+        <img class="articleImgFullWidth" src="{{ post.image.url }}" alt="">
+        {{ post.text|safe }}
+    </section>
+
+    <div class="socialBlock socialBlockActicle">
+        {% for soc in socials %}
+            <a href="{{ soc.url }}" class="socialItem">
+                <img src="{{ soc.file.url }}" width="34" height="34">
+            </a>
+        {% endfor %}
+    </div>
+    <section class="listCategoriesArticleWrap">
+        <div class="listCategoriesArticle">
+            <a href="{% url 'blog-index-cat' post.category.slug %}"
+               class="categoryButton categoryItemArticle customTextCategoryItemHover">{{ post.category.name }}</a>
+        </div>
+    </section>
+    <section class="downloadBlock downloadBlockWork" style="padding: 30px 25px 30px 25px;!important;">
+    <p class="headBlockInstruction" style="text-align: center;!important;">If you want to choose a font for your tattoo lettering - use our free service of fonts selection and create your own unique sketch of tattoo lettering</p>
+        <div class="downloadButtons">
+            <a href="{% url 'index' %}"  target="_blank" class="buttonHeader downloadButtonJpeg">
+                <span class="buttonHeaderLink" style="font-weight: 500;font-size: 17px;!important;">Free font generator for tattoos</span>
+                <div class="buttonUnlockBg"></div>
+            </a>
+        </div>
+    </section>
+
+    <section class="commentsSection">
+        <div class="fb-comments" data-href="http://{{ domain }}/" data-width="" data-numposts="5"></div>
+    </section>
+
+{% endblock %}

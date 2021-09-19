@@ -19,6 +19,10 @@ class FontCategory(models.Model):
         max_length=100,
     )
 
+    class Meta:
+        verbose_name = 'Font Category'
+        verbose_name_plural = 'Font Categories'
+
     def __str__(self):
         return self.name
 
@@ -86,6 +90,10 @@ class Font(models.Model):
     downloads = models.IntegerField(
         default=random.randint(15,50)
     )
+
+    class Meta:
+        verbose_name = 'Font'
+        verbose_name_plural = 'Fonts'
 
     def __str__(self):
         return self.id.__str__() + ' : ' + self.name

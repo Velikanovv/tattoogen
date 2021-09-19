@@ -18,6 +18,10 @@ class PostCategory(models.Model):
         editable=False,
     )
 
+    class Meta:
+        verbose_name = 'Post Category'
+        verbose_name_plural = 'Post Categories'
+
     def save(self, force_insert=False, force_update=False, *args, **kwargs):
         self.slug = slugify(self.name)
         if not PostCategory.objects.filter(slug=self.slug).exists():

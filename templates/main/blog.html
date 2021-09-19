@@ -1,0 +1,36 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %}Blog{% endblock %}
+{% block description %}Tattoo fonts generator online{% endblock %}
+{% block keywords %}Blog, POst, Tattoo fonts generator online, free font for tattoo, tattoo font online, generator of fonts for tattoo,Tattoo, Lettering tattoo, Script tattoo, Font tattoo, Tattoo designs, Letters font, Font style, Free tattoo font{% endblock %}
+{% block main %}
+    <section class="headBlock headBlockBlog">
+        <h1 class="mainTitle mainTitleBlog">BLOG</h1>
+    </section>
+
+    <section class="listCategoriesBlogWrap">
+        <div class="categoryListWrap">
+            <div class="customTextCategoryList listCategoriesBlog">
+                <a href="{% url 'blog-index' %}"
+                   class="categoryButton customTextCategoryItem customTextCategoryItemHover categoryButtonActive">All</a>
+                {% for cat in categories %}
+                    {% if cat.posts.count > 0 %}
+                        <a href="{% url 'blog-index-cat' cat.slug %}"
+                           class="categoryButton customTextCategoryItem customTextCategoryItemHover">{{ cat.name }}</a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <section class="blogEntrySection">
+        {% for post in posts %}
+            <a href="{% url 'blog-post' post.pk %}" class="blogEntryBlock">
+                <img src="{{ post.image.url }}" style="height: 210px;" alt="" class="blogEntryImg">
+                <h2 class="blogEntryTitle">{{ post.title }}</h2>
+                <span class="blogEntryDate">{{ post.date|date:"d.m.Y" }}</span>
+            </a>
+        {% endfor %}
+    </section>
+
+{% endblock %}

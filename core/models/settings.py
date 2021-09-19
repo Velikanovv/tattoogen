@@ -34,6 +34,10 @@ class ContentSettings(models.Model):
         upload_to=logo_footer_path,
     )
 
+    class Meta:
+        verbose_name = 'Settings'
+        verbose_name_plural = 'Settings'
+
     def __str__(self):
         return 'Content Settings'
 
@@ -92,8 +96,8 @@ class SocialMediaSetting(models.Model):
         super(SocialMediaSetting, self).save(force_insert, force_update, *args, **kwargs)
 
     class Meta:
-        verbose_name = 'Social'
-        verbose_name_plural = 'Socials'
+        verbose_name = 'Social Icon'
+        verbose_name_plural = 'Social Icons'
 
 
 @receiver(pre_delete, sender=SocialMediaSetting)

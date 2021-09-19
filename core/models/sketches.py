@@ -94,6 +94,10 @@ class Sketch(models.Model):
         editable=False,
     )
 
+    class Meta:
+        verbose_name = 'Sketch'
+        verbose_name_plural = 'Sketches'
+
     def get_absolute_url(self):
         return f'/sketch/{self.hash}/'
 
