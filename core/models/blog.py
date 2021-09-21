@@ -18,6 +18,9 @@ class PostCategory(models.Model):
         editable=False,
     )
 
+    def get_absolute_url(self):
+        return f'/blog/c/{self.slug}/'
+
     class Meta:
         verbose_name = 'Post Category'
         verbose_name_plural = 'Post Categories'
