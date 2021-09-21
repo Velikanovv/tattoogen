@@ -24,7 +24,7 @@
     <section class="blogEntrySection">
         {% for post in posts %}
             <a href="{% url 'blog-post' post.pk %}" class="blogEntryBlock">
-                <img src="{{ post.image.url }}" alt="" class="blogEntryImg">
+                <img src="{{ post.image.url }}" alt="" class="blogEntryImg" style="height: 210px;">
                 <h2 class="blogEntryTitle">{{ post.title }}</h2>
                 <span class="blogEntryDate">{{ post.date|date:"d.m.Y" }}</span>
             </a>

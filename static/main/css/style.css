@@ -535,8 +535,8 @@
 
 @font-face {
   font-family: 'Montserrat';
-  src: url("../fonts/Montserrat-Semibold.woff2");
-  src: url("../fonts/Montserrat-Semibold.woff2") format("woff2"), url("../fonts/Montserrat-Semibold.woff") format("woff"), url("../fonts/Montserrat-Semibold.ttf") format("ttf");
+  src: url("../fonts/Montserrat-SemiBold.woff2");
+  src: url("../fonts/Montserrat-SemiBold.woff2") format("woff2"), url("../fonts/Montserrat-SemiBold.woff") format("woff"), url("../fonts/Montserrat-SemiBold.ttf") format("ttf");
   font-weight: 600;
   font-style: normal;
 }
