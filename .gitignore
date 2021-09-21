@@ -25,6 +25,10 @@ storage
 # C extensions
 *.so
 
+.env.dev
+.env.prod
+.nev.prod.db
+
 # Distribution / packaging
 .Python
 build/

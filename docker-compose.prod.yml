@@ -29,7 +29,7 @@ services:
       - static_volume:/home/app/web/static/
       - ./storage:/home/app/web/storage/
     ports:
-      - 80:80
+      - 30001:30001
     depends_on:
       - web
     restart: on-failure

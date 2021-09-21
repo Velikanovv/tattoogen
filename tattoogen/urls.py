@@ -20,9 +20,12 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 from django.contrib.sitemaps.views import sitemap
-from web.sitemaps import PostSitemap, SketchSitemap, SketchMainSitemap
+from web.sitemaps import PostSitemap, SketchSitemap, SketchMainSitemap, MainSitemap, MainBlogSitemap, PostCategorySitemap
 
 sitemaps = {
+    'index': MainSitemap,
+    'blog': MainBlogSitemap,
+    'post-categories': PostCategorySitemap,
     'mainsketches': SketchMainSitemap,
     'sketches': SketchSitemap,
     'posts': PostSitemap,
