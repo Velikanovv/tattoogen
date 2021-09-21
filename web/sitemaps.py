@@ -12,7 +12,7 @@ class MainSitemap(Sitemap):
 
 class MainBlogSitemap(Sitemap):
 
-    location = "blog/"
+    location = "/blog/"
     changefreq = "weekly"
     priority = 1
 
