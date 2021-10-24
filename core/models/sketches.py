@@ -1,6 +1,7 @@
 from django.db import models
 from ..models import Font
 from slugify import slugify
+from ..models import ContentSettings
 import hashlib
 from PIL import Image, ImageDraw, ImageFont
 from io import BytesIO
@@ -121,6 +122,7 @@ class Sketch(models.Model):
             None)
         self.link = 'http://' + Site.objects.filter(pk=settings.SITE_ID).first().domain + '/sketch/' + self.hash + '/'
         if not self.id:
+            cs = ContentSettings.objects.filter().all()
             self.delete_date = timezone.now() + timedelta(days=90)
             titles = ['Tattoo', 'Lettering tattoo', 'Script tattoo','Font tattoo', 'Tattoo designs', 'Letters font', 'Font style', 'Free tattoo font']
             self.title_part = random.choice(titles)

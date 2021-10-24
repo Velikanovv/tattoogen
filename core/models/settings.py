@@ -14,31 +14,34 @@ import random
 def logo_header_path(instance, filename):
     return 'settings/logo_header/{0}'.format(filename)
 
-
 def logo_footer_path(instance, filename):
     return 'settings/logo_footer/{0}'.format(filename)
-
 
 def icon_footer_path(instance, filename):
     return 'settings/icon/{0}'.format(filename)
 
-
 class ContentSettings(models.Model):
     main_title = models.CharField(
         default='TATTOO GENERATOR',
-        max_length=100,
+        max_length=100
     )
     instruction = models.TextField(
-        blank=True,
+        blank=True
     )
     logo_header = models.FileField(
-        upload_to=logo_header_path,
+        upload_to=logo_header_path
     )
     logo_footer = models.FileField(
-        upload_to=logo_footer_path,
+        upload_to=logo_footer_path
     )
     icon = models.ImageField(
-        upload_to=icon_footer_path,
+        upload_to=icon_footer_path
+    )
+    sketch_meta_titles = models.TextField(
+        blank=True
+    )
+    sketch_meta_keywords = models.TextField(
+        blank=True
     )
 
     class Meta:
@@ -117,3 +120,6 @@ def delete_font_hook(sender, instance, using, **kwargs):
         instance.file.storage.delete(instance.file.path)
     except:
         pass
+
+
+
