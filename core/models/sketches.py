@@ -32,6 +32,26 @@ def default_slug(text):
     return slugify(text)
 
 def create_sketch(text, font_path, color):
+    if text.len() > 29:
+        texts = string.split()
+        l = 0
+        new_text = ''
+        for t in texts:
+            if l == 0:
+                new_text = new_text + t
+                l = l + t.len()
+                if l > 29:
+                    new_text = new_text + '\n'
+                    l = 0
+            else:
+                if l + t.len() < 30:
+                    l = l + t.len()
+                    new_text = new_text + ' ' + t
+                else:
+                    l = 0
+                    new_text = new_text + '\n'
+        text = new_text
+            
     img = Image.new('RGB', (10, 10), ('#FFFFFF'))
     d = ImageDraw.Draw(img)
     font = ImageFont.truetype(font_path, size=100)
