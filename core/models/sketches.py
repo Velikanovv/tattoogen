@@ -32,20 +32,20 @@ def default_slug(text):
     return slugify(text)
 
 def create_sketch(text, font_path, color):
-    if text.len() > 29:
+    if len(text) > 29:
         texts = string.split()
         l = 0
         new_text = ''
         for t in texts:
             if l == 0:
                 new_text = new_text + t
-                l = l + t.len()
+                l = l + len(t)
                 if l > 29:
                     new_text = new_text + '\n'
                     l = 0
             else:
-                if l + t.len() < 30:
-                    l = l + t.len()
+                if l + len(t) < 30:
+                    l = l + len(t)
                     new_text = new_text + ' ' + t
                 else:
                     l = 0
